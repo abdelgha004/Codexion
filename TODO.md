@@ -25,25 +25,28 @@
 # Day 2 - Design
 
 ## Structures
-- [ ] Design simulation struct
-- [ ] Design coder struct
-- [ ] Design dongle struct
+- [X] Design simulation struct
+- [X] Design coder struct
+- [X] Design dongle struct
+- [X] Decide shared vs private data
+- [X] Decide ownership of resources
 
 ## Parsing
-- [ ] Parse command line arguments
-- [ ] Validate arguments
-- [ ] Handle invalid inputs
+- [X] Parse command line arguments
+- [X] Validate arguments
+- [X] Handle invalid inputs
 
 ---
 
 # Day 3 - Threads
 
-## Coder Threads
+## Threads
 - [ ] Create one thread per coder
+- [ ] Create monitor thread
 - [ ] Create coder routine
+- [ ] Create monitor routine
 - [ ] Join all threads
 - [ ] Test thread creation
-
 ---
 
 # Day 4 - Mutexes
@@ -52,6 +55,10 @@
 - [ ] Create one mutex per dongle
 - [ ] Lock mutex
 - [ ] Unlock mutex
+
+## Mutexes
+- [ ] Initialize mutexes
+- [ ] Destroy mutexes
 
 ## Logging
 - [ ] Create print mutex
@@ -68,6 +75,8 @@
 - [ ] Take left dongle
 - [ ] Take right dongle
 - [ ] Compile
+- [ ] Update last_compile_start
+- [ ] Increase compile count
 - [ ] Release both dongles
 - [ ] Debug
 - [ ] Refactor
@@ -84,6 +93,7 @@
 - [ ] Create monitor thread
 - [ ] Detect burnout
 - [ ] Stop simulation
+- [ ] Protect simulation stop flag
 
 ## Timing
 - [ ] Burnout within 10ms
@@ -97,6 +107,10 @@
 - [ ] Store release time
 - [ ] Prevent immediate reuse
 - [ ] Test cooldown
+
+## Waiting
+- [ ] Add condition variables
+- [ ] Wake waiting coders
 
 ---
 
@@ -131,6 +145,9 @@
 - [ ] Test edge cases
 - [ ] Test with many coders
 - [ ] Check for memory leaks
+- [ ] Test one coder
+- [ ] Test two coders
+- [ ] Test invalid arguments
 
 ---
 
