@@ -6,7 +6,7 @@
 /*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/26 10:01:27 by aakourya          #+#    #+#             */
-/*   Updated: 2026/07/26 12:06:26 by aakourya         ###   ########.fr       */
+/*   Updated: 2026/07/27 09:40:07 by aakourya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ int	main(int argc, char **argv)
 		return (1);
 	if (init_simulation(&sim) != 0)
 		return (1);
-	printf("Coder 1 left dongle: %d\n", sim.coders[0].left->id);
-	printf("Coder 1 right dongle: %d\n", sim.coders[0].right->id);
+	if (create_threads(&sim) != 0)
+		return (1);
+	if (join_threads(&sim) != 0)
+		return (1);
 	return (0);
 }

@@ -5,7 +5,8 @@ RM = rm -f
 NAME = codexion
 
 
-SRC = src/main.c src/parsing.c src/init.c
+SRC = src/main.c src/parsing.c src/init.c src/monitor.c\
+	src/routine.c src/coder.c
 
 
 OBJ = $(SRC:.c=.o)

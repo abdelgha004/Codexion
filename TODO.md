@@ -41,12 +41,12 @@
 # Day 3 - Threads
 
 ## Threads
-- [ ] Create one thread per coder
-- [ ] Create monitor thread
-- [ ] Create coder routine
-- [ ] Create monitor routine
-- [ ] Join all threads
-- [ ] Test thread creation
+- [X] Create one thread per coder
+- [X] Create monitor thread
+- [x] Create coder routine
+- [X] Create monitor routine
+- [X] Join all threads
+- [X] Test thread creation
 ---
 
 # Day 4 - Mutexes
