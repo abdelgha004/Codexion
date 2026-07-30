@@ -6,7 +6,7 @@
 /*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/26 10:38:48 by aakourya          #+#    #+#             */
-/*   Updated: 2026/07/26 12:04:31 by aakourya         ###   ########.fr       */
+/*   Updated: 2026/07/30 12:23:15 by aakourya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int	init_dongles(t_simulation *sim)
 	{
 		sim->dongles[i].id = i + 1;
 		sim->dongles[i].last_release_time = 0;
-		// pthread_mutex_init(&sim->dongles[i].mutex, NULL);
+		if (pthread_mutex_init(&sim->dongles[i].mutex, NULL) != 0)
+			return (1);
 		i++;
 	}
 	return (0);
@@ -83,6 +84,10 @@ int	init_simulation(t_simulation *sim)
 		return (1);
 	}
 	connect_dongles(sim);
+	if (pthread_mutex_init(&sim->print_mutex, NULL) != 0)
+		// need to free
+		return (1);
+	sim->start_time = get_time_ms();
 	sim->stop = 0;
 	return (0);
 }

@@ -52,38 +52,37 @@
 # Day 4 - Mutexes
 
 ## Dongles
-- [ ] Create one mutex per dongle
-- [ ] Lock mutex
-- [ ] Unlock mutex
+- [X] Create one mutex per dongle
+- [X] Lock mutex
+- [X] Unlock mutex
 
 ## Mutexes
-- [ ] Initialize mutexes
-- [ ] Destroy mutexes
+- [X] Initialize mutexes
+- [X] Destroy mutexes
 
 ## Logging
-- [ ] Create print mutex
-- [ ] Protect all output
+- [X] Create print mutex
 
 ## Testing
-- [ ] Test race conditions
+- [X] Test race conditions
 
 ---
 
 # Day 5 - Simulation
 
 ## Coder Routine
-- [ ] Take left dongle
-- [ ] Take right dongle
-- [ ] Compile
-- [ ] Update last_compile_start
-- [ ] Increase compile count
-- [ ] Release both dongles
-- [ ] Debug
-- [ ] Refactor
+- [X] Take left dongle
+- [X] Take right dongle
+- [X] Compile
+- [X] Update last_compile_start
+- [X] Increase compile count
+- [X] Release both dongles
+- [X] Debug
+- [X] Refactor
 
 ## Timing
-- [ ] Implement sleeping
-- [ ] Print timestamps
+- [X] Implement sleeping
+- [X] Print timestamps
 
 ---
 

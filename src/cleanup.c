@@ -1,27 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   monitor.c                                          :+:      :+:    :+:   */
+/*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/27 09:38:26 by aakourya          #+#    #+#             */
-/*   Updated: 2026/07/30 11:39:08 by aakourya         ###   ########.fr       */
+/*   Created: 2026/07/30 10:01:11 by aakourya          #+#    #+#             */
+/*   Updated: 2026/07/30 10:13:49 by aakourya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../codexion.h"
 
-void *monitor_routine(void *arg)
+int destroy_mutexes(t_simulation *sim)
 {
-    t_simulation *sim;
-    sim = (t_simulation *) arg;
+    int i;
+    i = 0;
 
-    (void)sim; // to remove
-    
-    // pthread_mutex_lock(&sim->print_mutex);
-    printf("Monitor started\n");
-    // pthread_mutex_unlock(&sim->print_mutex);
-    return (NULL);
+    while(i < sim->number_of_coders)
+    {
+        if(pthread_mutex_destroy(&sim->dongles[i].mutex) != 0)
+            return (1);
+        i++;
+    }
+    if(pthread_mutex_destroy(&sim->print_mutex) != 0)
+        return (1);
+    return (0);
 }
-
