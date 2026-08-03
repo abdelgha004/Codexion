@@ -25,8 +25,9 @@ void smart_sleep(long duration, t_simulation *sim)
     start = get_timestamp(sim);
     while((get_timestamp(sim) - start) < duration)
     {
-        if (sim->stop)
-            return;
+        // too check or handel let 
+        if (get_stop(sim))
+			return;
         usleep(1000);
     }
 }

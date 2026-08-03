@@ -6,7 +6,7 @@
 /*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/26 10:38:48 by aakourya          #+#    #+#             */
-/*   Updated: 2026/07/30 12:23:15 by aakourya         ###   ########.fr       */
+/*   Updated: 2026/07/31 19:01:00 by aakourya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ int	init_simulation(t_simulation *sim)
 	if (!sim->coders)
 		return (1);
 	sim->dongles = malloc(sizeof(t_dongle) * sim->number_of_coders);
+
+	sim->start_time = get_time_ms();
 	if (!sim->dongles)
 	{
 		free(sim->coders);

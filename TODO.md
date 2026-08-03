@@ -89,9 +89,9 @@
 # Day 6 - Monitor
 
 ## Monitor Thread
-- [ ] Create monitor thread
-- [ ] Detect burnout
-- [ ] Stop simulation
+- [X] Create monitor thread
+- [X] Detect burnout
+- [X] Stop simulation
 - [ ] Protect simulation stop flag
 
 ## Timing

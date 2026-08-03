@@ -6,7 +6,7 @@
 /*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/27 09:12:22 by aakourya          #+#    #+#             */
-/*   Updated: 2026/07/27 09:40:52 by aakourya         ###   ########.fr       */
+/*   Updated: 2026/07/31 19:19:58 by aakourya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,12 @@ int	create_threads(t_simulation *sim)
     }
     if(pthread_create(&sim->monitor_thread,
         NULL, monitor_routine, sim) != 0)
-        return (1);
+        {
+            printf("Failed to create coder %d\n", i + 1);
+
+            return (1);
+        }
+    printf("Created coder %d\n", i + 1);
     return (0);
 }
 

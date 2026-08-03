@@ -6,7 +6,7 @@
 /*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/30 10:01:11 by aakourya          #+#    #+#             */
-/*   Updated: 2026/07/30 10:13:49 by aakourya         ###   ########.fr       */
+/*   Updated: 2026/07/31 17:08:49 by aakourya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int destroy_mutexes(t_simulation *sim)
         i++;
     }
     if(pthread_mutex_destroy(&sim->print_mutex) != 0)
+        return (1);
+    if(pthread_mutex_destroy(&sim->data_mutex) != 0)
         return (1);
     return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/26 10:01:32 by aakourya          #+#    #+#             */
-/*   Updated: 2026/07/30 15:43:19 by aakourya         ###   ########.fr       */
+/*   Updated: 2026/07/31 19:08:26 by aakourya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_simulation
 	
 	int						stop;
 	pthread_mutex_t			print_mutex;
+	pthread_mutex_t			data_mutex;
 	int						scheduler;
 }							t_simulation;
 
@@ -75,11 +76,13 @@ long get_time_ms(void);
 long get_timestamp(t_simulation *sim);
 void smart_sleep(long duration, t_simulation *sim);
 
+long	get_last_compile_time(t_coder *coder);
+void	set_last_compile_time(t_coder *coder, long time);
+int		get_stop(t_simulation *sim);
+void	set_stop(t_simulation *sim);
 // int take_dongles(t_coder *coder);
 // void release_dongles(t_coder *coder);
 // void	compile(t_coder *coder);
 // void	debug(t_coder *coder);
 // void	refactor(t_coder *coder);
-
-
 #endif
