@@ -75,11 +75,12 @@ long get_time_ms(void);
 long get_timestamp(t_simulation *sim);
 void smart_sleep(long duration, t_simulation *sim);
 
-// int take_dongles(t_coder *coder);
+int take_dongles(t_coder *coder);
 // void release_dongles(t_coder *coder);
 // void	compile(t_coder *coder);
 // void	debug(t_coder *coder);
 // void	refactor(t_coder *coder);
 
+int	all_coders_finished(t_simulation *sim);
 
 #endif
