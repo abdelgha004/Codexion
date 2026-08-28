@@ -42,6 +42,7 @@ typedef struct s_simulation
 	
 	int						stop;
 	pthread_mutex_t			print_mutex;
+	pthread_mutex_t			stop_mutex;
 	int						scheduler;
 }							t_simulation;
 
@@ -82,5 +83,6 @@ int take_dongles(t_coder *coder);
 // void	refactor(t_coder *coder);
 
 int	all_coders_finished(t_simulation *sim);
-
+int		get_stop(t_simulation *sim);
+void	set_stop(t_simulation *sim);
 #endif

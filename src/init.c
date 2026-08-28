@@ -37,7 +37,7 @@ int	init_coders(t_simulation *sim)
 	{
 		sim->coders[i].id = i + 1;
 		sim->coders[i].compile_count = 0;
-		sim->coders[i].last_compile_start = 0;
+		sim->coders[i].last_compile_start = get_timestamp(sim);
 		sim->coders[i].sim = sim;
 		i++;
 	}
@@ -85,8 +85,12 @@ int	init_simulation(t_simulation *sim)
 	}
 	connect_dongles(sim);
 	if (pthread_mutex_init(&sim->print_mutex, NULL) != 0)
-		// need to free
 		return (1);
+	if (pthread_mutex_init(&sim->stop_mutex, NULL) != 0)
+	{
+		pthread_mutex_destroy(&sim->print_mutex);
+		return (1);
+	}
 	sim->start_time = get_time_ms();
 	sim->stop = 0;
 	return (0);

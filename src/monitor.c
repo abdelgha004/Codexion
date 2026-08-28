@@ -1,27 +1,33 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   monitor.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/27 09:38:26 by aakourya          #+#    #+#             */
-/*   Updated: 2026/07/30 11:39:08 by aakourya         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../codexion.h"
 
-void *monitor_routine(void *arg)
+void	*monitor_routine(void *arg)
 {
-    t_simulation *sim;
-    sim = (t_simulation *) arg;
+	t_simulation	*sim;
+	int				i;
+	long			now;
+	long			deadline;
 
-    (void)sim; // to remove
-    
-    // pthread_mutex_lock(&sim->print_mutex);
-    printf("Monitor started\n");
-    // pthread_mutex_unlock(&sim->print_mutex);
-    return (NULL);
+	sim = (t_simulation *)arg;
+	while (!get_stop(sim))
+	{
+		i = 0;
+		while (i < sim->number_of_coders)
+		{
+			now = get_timestamp(sim);
+			deadline = sim->coders[i].last_compile_start
+				+ sim->time_to_burnout;
+			if (now >= deadline)
+			{
+				pthread_mutex_lock(&sim->print_mutex);
+				printf("%ld %d burned out\n",
+					now, sim->coders[i].id);
+				pthread_mutex_unlock(&sim->print_mutex);
+				set_stop(sim);
+				return (NULL);
+			}
+			i++;
+		}
+		usleep(500);
+	}
+	return (NULL);
 }
-
