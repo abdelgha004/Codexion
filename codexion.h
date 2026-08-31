@@ -51,6 +51,7 @@ typedef struct s_dongle
 	int						id;
 	long					last_release_time;
 	pthread_mutex_t			mutex;
+	pthread_cond_t  condition;
 }							t_dongle;
 
 typedef struct s_coder
@@ -77,12 +78,14 @@ long get_timestamp(t_simulation *sim);
 void smart_sleep(long duration, t_simulation *sim);
 
 int take_dongles(t_coder *coder);
-// void release_dongles(t_coder *coder);
-// void	compile(t_coder *coder);
-// void	debug(t_coder *coder);
-// void	refactor(t_coder *coder);
+void release_dongles(t_coder *coder);
+void	compile(t_coder *coder);
+void	debug(t_coder *coder);
+void	refactor(t_coder *coder);
 
 int	all_coders_finished(t_simulation *sim);
 int		get_stop(t_simulation *sim);
 void	set_stop(t_simulation *sim);
+
+int     dongle_ready(t_coder *coder, t_dongle *dongle);
 #endif

@@ -19,7 +19,7 @@ NAME = codexion
 
 SRC = src/main.c src/parsing.c src/init.c src/monitor.c\
 	src/routine.c src/coder.c src/cleanup.c src/dongle.c\
-	src/time.c src/helper.c 
+	src/time.c src/helper.c
 
 
 OBJ = $(SRC:.c=.o)

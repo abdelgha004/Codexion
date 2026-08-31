@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/26 10:01:27 by aakourya          #+#    #+#             */
-/*   Updated: 2026/07/27 09:40:07 by aakourya         ###   ########.fr       */
+/*   Updated: 2026/08/31 17:24:36 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,8 @@ int	main(int argc, char **argv)
 		return (1);
 	if (join_threads(&sim) != 0)
 		return (1);
+	destroy_mutexes(&sim);
+	// free(sim.coders);
+	// free(sim.dongles);
 	return (0);
 }

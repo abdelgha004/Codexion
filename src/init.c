@@ -12,6 +12,7 @@
 
 #include "../codexion.h"
 
+/* DAY 7: Initialize the mutex and condition variable of each dongle. */
 int	init_dongles(t_simulation *sim)
 {
 	int	i;
@@ -23,6 +24,11 @@ int	init_dongles(t_simulation *sim)
 		sim->dongles[i].last_release_time = 0;
 		if (pthread_mutex_init(&sim->dongles[i].mutex, NULL) != 0)
 			return (1);
+		if (pthread_cond_init(&sim->dongles[i].condition, NULL) != 0)
+        {
+            pthread_mutex_destroy(&sim->dongles[i].mutex);
+            return (1);
+        }
 		i++;
 	}
 	return (0);
