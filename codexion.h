@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/26 10:01:32 by aakourya          #+#    #+#             */
-/*   Updated: 2026/07/30 15:43:19 by aakourya         ###   ########.fr       */
+/*   Created: 2026/09/01 10:00:00 by aakourya          #+#    #+#             */
+/*   Updated: 2026/09/01 10:00:00 by aakourya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,78 +14,119 @@
 # define CODEXION_H
 
 # include <pthread.h>
+# include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <sys/time.h>
 # include <unistd.h>
-#include <sys/time.h>
+# include <limits.h>
 
-
-typedef struct s_simulation	t_simulation;
-typedef struct s_dongle		t_dongle;
-typedef struct s_coder		t_coder;
-
-typedef struct s_simulation
+typedef enum e_scheduler
 {
-	int		number_of_coders;
-	int		time_to_burnout;
-	int		time_to_compile;
-	int		time_to_debug;
-	int		time_to_refactor;
-	int		number_of_compiles_required;
-	int		dongle_cooldown;
-	long start_time;
-	t_dongle	*dongles;
-	t_coder		*coders;
+	FIFO,
+	EDF
+}	t_scheduler;
 
-	pthread_t monitor_thread;
-	
-	int						stop;
-	pthread_mutex_t			print_mutex;
-	pthread_mutex_t			stop_mutex;
-	int						scheduler;
-}							t_simulation;
+typedef struct s_config	t_config;
+typedef struct s_coder	t_coder;
+typedef struct s_dongle	t_dongle;
 
-typedef struct s_dongle
+typedef struct s_request
 {
-	int						id;
-	long					last_release_time;
-	pthread_mutex_t			mutex;
-	pthread_cond_t  condition;
-}							t_dongle;
+	int		id;
+	long	key;
+}	t_request;
 
-typedef struct s_coder
+typedef struct s_heap
+{
+	t_request	*nodes;
+	int			size;
+	int			capacity;
+}	t_heap;
+
+struct s_dongle
+{
+	int				id;
+	bool			held;
+	long			release_time;
+	pthread_mutex_t	mutex;
+	pthread_cond_t	cond;
+	t_heap			heap;
+};
+
+struct s_coder
 {
 	int				id;
 	pthread_t		thread;
-	t_dongle		*left;
-	t_dongle		*right;
+	pthread_mutex_t	mutex;
 	int				compile_count;
 	long			last_compile_start;
-	t_simulation	*sim;
-}							t_coder;
+	int				left;
+	int				right;
+	t_config		*conf;
+};
 
-int		parse_args(t_simulation *sim, int argc, char **argv);
-int		init_simulation(t_simulation *sim);
-void	*coder_routine(void *arg);
-int	create_threads(t_simulation *sim);
-int join_threads(t_simulation *sim);
-void *monitor_routine(void *arg);
-int destroy_mutexes(t_simulation *sim);
+struct s_config
+{
+	int				num_coders;
+	long			time_to_burnout;
+	long			time_to_compile;
+	long			time_to_debug;
+	long			time_to_refactor;
+	int				num_compiles;
+	long			dongle_cooldown;
+	t_scheduler		scheduler;
+	long			start_time;
+	bool			running;
+	pthread_mutex_t	sim_mutex;
+	pthread_mutex_t	print_mutex;
+	t_coder			*coders;
+	t_dongle		*dongles;
+	int				init_coders;
+	int				init_dongles;
+};
 
-long get_time_ms(void);
-long get_timestamp(t_simulation *sim);
-void smart_sleep(long duration, t_simulation *sim);
+/* parser.c */
+int				parse_args(int argc, char **argv, t_config *conf);
 
-int take_dongles(t_coder *coder);
-void release_dongles(t_coder *coder);
-void	compile(t_coder *coder);
-void	debug(t_coder *coder);
-void	refactor(t_coder *coder);
+/* init.c */
+int				init_config(t_config *conf);
+int				init_coders(t_config *conf);
+int				init_dongles(t_config *conf);
 
-int	all_coders_finished(t_simulation *sim);
-int		get_stop(t_simulation *sim);
-void	set_stop(t_simulation *sim);
+/* cleanup.c */
+void			cleanup(t_config *conf);
 
-int     dongle_ready(t_coder *coder, t_dongle *dongle);
+/* simulation.c */
+int				run_simulation(t_config *conf);
+
+/* monitor.c */
+void			*monitor_routine(void *arg);
+
+/* coder.c */
+void			*coder_routine(void *arg);
+
+/* dongle.c */
+int				grab_dongle(t_coder *coder, int id);
+void			release_dongle(t_config *conf, int id);
+
+/* heap.c */
+void			heap_init(t_heap *heap, int capacity);
+int				heap_push(t_heap *heap, t_request req, t_scheduler scheduler);
+int				heap_pop(t_heap *heap);
+int				heap_peek(t_heap *heap);
+void			heap_destroy(t_heap *heap);
+
+/* time.c */
+long			get_time_ms(void);
+long			elapsed_time(t_config *conf);
+
+/* utils.c */
+bool			is_running(t_config *conf);
+void			stop_simulation(t_config *conf);
+void			wake_all(t_config *conf);
+void			print_state(t_coder *coder, char *state);
+void			ft_sleep(long ms, t_config *conf);
+
 #endif

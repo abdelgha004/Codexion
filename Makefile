@@ -1,26 +1,22 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2026/07/30 10:01:18 by aakourya          #+#    #+#              #
-#    Updated: 2026/07/30 11:40:38 by aakourya         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -pthread
+
+CFLAGS = -Wall -Wextra -Werror -pthread -Iinclude
+
 RM = rm -f
 
 NAME = codexion
 
-
-SRC = src/main.c src/parsing.c src/init.c src/monitor.c\
-	src/routine.c src/coder.c src/cleanup.c src/dongle.c\
-	src/time.c src/helper.c
-
+SRC = src/main.c \
+	src/parser.c \
+	src/init.c \
+	src/cleanup.c \
+	src/simulation.c \
+	src/monitor.c \
+	src/coder.c \
+	src/dongle.c \
+	src/heap.c \
+	src/time.c \
+	src/utils.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -28,7 +24,6 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
-
 
 clean:
 	$(RM) $(OBJ)

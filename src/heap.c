@@ -1,96 +1,99 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heap.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../codexion.h"
 
-/* DAY 7: Compare two requests according to FIFO or EDF. */
-int	request_has_priority(t_heap *heap, t_request *first, t_request *second)
+static bool	higher(t_request a, t_request b, t_scheduler scheduler)
 {
-	if (heap->scheduler == 1)
-	{
-		if (first->request_time != second->request_time)
-			return (first->request_time < second->request_time);
-	}
-	else
-	{
-		if (first->deadline != second->deadline)
-			return (first->deadline < second->deadline);
-	}
-	return (first->coder->id < second->coder->id);
+	if (scheduler == FIFO)
+		return (a.key < b.key);
+	if (a.key != b.key)
+		return (a.key < b.key);
+	return (a.id < b.id);
 }
 
-/* DAY 7: Initialize an empty priority queue for one dongle. */
-int	heap_init(t_heap *heap, int capacity, int scheduler)
+static void	swap(t_request *a, t_request *b)
 {
-	heap->requests = malloc(sizeof(t_request) * capacity);
-	if (!heap->requests)
-		return (1);
+	t_request	tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
+void	heap_init(t_heap *heap, int capacity)
+{
+	heap->nodes = calloc(capacity, sizeof(t_request));
 	heap->size = 0;
 	heap->capacity = capacity;
-	heap->scheduler = scheduler;
-	return (0);
 }
 
-/* DAY 7: Swap two requests inside the heap. */
-void	heap_swap(t_request *first, t_request *second)
+int	heap_push(t_heap *heap, t_request req, t_scheduler scheduler)
 {
-	t_request	temp;
-
-	temp = *first;
-	*first = *second;
-	*second = temp;
-}
-
-/* DAY 7: Restore heap order after adding a request. */
-void	heap_push(t_heap *heap, t_request request)
-{
-	int	index;
+	int	i;
 	int	parent;
 
 	if (heap->size >= heap->capacity)
-		return ;
-	index = heap->size;
-	heap->requests[index] = request;
-	heap->size++;
-	while (index > 0)
+		return (1);
+	i = heap->size++;
+	heap->nodes[i] = req;
+	while (i > 0)
 	{
-		parent = (index - 1) / 2;
-		if (!request_has_priority(heap, &heap->requests[index],
-				&heap->requests[parent]))
+		parent = (i - 1) / 2;
+		if (!higher(heap->nodes[i], heap->nodes[parent], scheduler))
 			break ;
-		heap_swap(&heap->requests[index], &heap->requests[parent]);
-		index = parent;
+		swap(&heap->nodes[i], &heap->nodes[parent]);
+		i = parent;
 	}
+	return (0);
 }
 
-/* DAY 7: Return the highest-priority request without removing it. */
-t_request	*heap_peek(t_heap *heap)
+int	heap_pop(t_heap *heap)
 {
-	if (heap->size == 0)
-		return (NULL);
-	return (&heap->requests[0]);
-}
+	int	i;
+	int	child;
+	int	last;
 
-/* DAY 7: Remove and return the highest-priority request. */
-t_request	heap_pop(t_heap *heap)
-{
-	t_request	result;
-	int			index;
-	int			child;
-
-	result = heap->requests[0];
-	heap->size--;
-	heap->requests[0] = heap->requests[heap->size];
-	index = 0;
-	while (index * 2 + 1 < heap->size)
+	if (!heap->size)
+		return (-1);
+	last = --heap->size;
+	if (!heap->size)
+		return (0);
+	heap->nodes[0] = heap->nodes[last];
+	i = 0;
+	while (1)
 	{
-		child = index * 2 + 1;
+		child = i * 2 + 1;
+		if (child >= heap->size)
+			break ;
 		if (child + 1 < heap->size
-			&& request_has_priority(heap, &heap->requests[child + 1],
-				&heap->requests[child]))
+			&& heap->nodes[child + 1].key < heap->nodes[child].key)
 			child++;
-		if (!request_has_priority(heap, &heap->requests[child],
-				&heap->requests[index]))
+		if (heap->nodes[i].key <= heap->nodes[child].key)
 			break ;
-		heap_swap(&heap->requests[index], &heap->requests[child]);
-		index = child;
+		swap(&heap->nodes[i], &heap->nodes[child]);
+		i = child;
 	}
-	return (result);
+	return (0);
+}
+
+int	heap_peek(t_heap *heap)
+{
+	if (!heap->size)
+		return (-1);
+	return (heap->nodes[0].id);
+}
+
+void	heap_destroy(t_heap *heap)
+{
+	free(heap->nodes);
+	heap->nodes = NULL;
+	heap->size = 0;
+	heap->capacity = 0;
 }

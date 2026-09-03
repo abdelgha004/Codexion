@@ -1,21 +1,52 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cleanup.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../codexion.h"
 
-int	destroy_mutexes(t_simulation *sim)
+static void	cleanup_coders(t_config *conf)
 {
 	int	i;
 
 	i = 0;
-	while (i < sim->number_of_coders)
+	while (i < conf->init_coders)
+		pthread_mutex_destroy(&conf->coders[i++].mutex);
+	free(conf->coders);
+	conf->coders = NULL;
+}
+
+static void	cleanup_dongles(t_config *conf)
+{
+	int	i;
+
+	i = 0;
+	while (i < conf->init_dongles)
 	{
-		if (pthread_mutex_destroy(&sim->dongles[i].mutex) != 0)
-			return (1);
-		if (pthread_cond_destroy(&sim->dongles[i].condition) != 0)
-			return (1);
+		heap_destroy(&conf->dongles[i].heap);
+		pthread_mutex_destroy(&conf->dongles[i].mutex);
+		pthread_cond_destroy(&conf->dongles[i].cond);
 		i++;
 	}
-	if (pthread_mutex_destroy(&sim->print_mutex) != 0)
-		return (1);
-	if (pthread_mutex_destroy(&sim->stop_mutex) != 0)
-		return (1);
-	return (0);
+	free(conf->dongles);
+	conf->dongles = NULL;
+}
+
+static void	cleanup_mutexes(t_config *conf)
+{
+	pthread_mutex_destroy(&conf->print_mutex);
+	pthread_mutex_destroy(&conf->sim_mutex);
+}
+
+void	cleanup(t_config *conf)
+{
+	if (conf->coders)
+		cleanup_coders(conf);
+	if (conf->dongles)
+		cleanup_dongles(conf);
+	cleanup_mutexes(conf);
 }

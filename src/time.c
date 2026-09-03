@@ -1,32 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   time.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../codexion.h"
 
-long get_time_ms(void)
+long	get_time_ms(void)
 {
-    struct timeval current_time;
-    gettimeofday(&current_time, NULL);
+	struct timeval	tv;
 
-    return ((current_time.tv_sec * 1000)
-        +(current_time.tv_usec / 1000));
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
 
-
-long get_timestamp(t_simulation *sim)
+long	elapsed_time(t_config *conf)
 {
-    long current_time;
-
-    current_time = get_time_ms();
-    return (current_time - sim->start_time);
-}
-
-void smart_sleep(long duration, t_simulation *sim)
-{
-    long start;
-
-    start = get_timestamp(sim);
-    while((get_timestamp(sim) - start) < duration)
-    {
-        if (get_stop(sim))
-            return;
-        usleep(1000);
-    }
+	return (get_time_ms() - conf->start_time);
 }

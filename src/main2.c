@@ -3,8 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/07/26 10:01:27 by aakourya          #+#    #+#             */
+/*   Updated: 2026/08/31 17:24:36 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -12,18 +14,18 @@
 
 int	main(int argc, char **argv)
 {
-	t_config	conf;
+	t_simulation	sim;
 
-	memset(&conf, 0, sizeof(conf));
-	if (parse_args(argc, argv, &conf))
+	if (parse_args(&sim, argc, argv) != 0)
 		return (1);
-	if (init_config(&conf))
-		return (cleanup(&conf), 1);
-	if (init_coders(&conf))
-		return (cleanup(&conf), 1);
-	if (init_dongles(&conf))
-		return (cleanup(&conf), 1);
-	run_simulation(&conf);
-	cleanup(&conf);
+	if (init_simulation(&sim) != 0)
+		return (1);
+	if (create_threads(&sim) != 0)
+		return (1);
+	if (join_threads(&sim) != 0)
+		return (1);
+	destroy_mutexes(&sim);
+	// free(sim.coders);
+	// free(sim.dongles);
 	return (0);
 }
