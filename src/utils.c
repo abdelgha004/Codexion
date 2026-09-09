@@ -1,61 +1,85 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../codexion.h"
 
-bool	is_running(t_config *conf)
+int	ft_atoi(const char *str, int *result)
 {
-	bool	value;
+	int		i;
+	long	number;
+	int		sign;
 
-	pthread_mutex_lock(&conf->sim_mutex);
-	value = conf->running;
-	pthread_mutex_unlock(&conf->sim_mutex);
-	return (value);
-}
-
-void	stop_simulation(t_config *conf)
-{
-	pthread_mutex_lock(&conf->sim_mutex);
-	conf->running = false;
-	pthread_mutex_unlock(&conf->sim_mutex);
-}
-
-void	wake_all(t_config *conf)
-{
-	int	i;
-
+	sign = 1;
 	i = 0;
-	while (i < conf->num_coders)
-	{
-		pthread_mutex_lock(&conf->dongles[i].mutex);
-		pthread_cond_broadcast(&conf->dongles[i].cond);
-		pthread_mutex_unlock(&conf->dongles[i].mutex);
+	number = 0;
+	if (!str[i])
+		return (2);
+	if (str[i] == '-')
+		sign *= -1;
+	if (str[i] == '+' || str[i] == '-')
 		i++;
+	if (!str[i])
+		return (4);
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		number = number * 10 + (str[i++] - '0');
+		if (number * sign > 2147483647 || number * sign < -2147483648)
+			return (3);
 	}
+	if (str[i])
+		return (4);
+	*result = number * sign;
+	return (0);
+}
+
+long	current_time(void)
+{
+	struct timeval	time;
+	long			t;
+
+	gettimeofday(&time, NULL);
+	t = time.tv_sec * 1000 + time.tv_usec / 1000;
+	return (t);
 }
 
 void	print_state(t_coder *coder, char *state)
 {
 	t_config	*conf;
+	long		time;
 
 	conf = coder->conf;
 	pthread_mutex_lock(&conf->print_mutex);
-	if (is_running(conf))
-		printf("%ld %d %s\n", elapsed_time(conf), coder->id, state);
+	if (is_sim_end(conf))
+	{
+		pthread_mutex_unlock(&conf->print_mutex);
+		return ;
+	}
+	time = current_time() - conf->start_time;
+	printf("%ld %d %s\n", time, coder->id, state);
 	pthread_mutex_unlock(&conf->print_mutex);
 }
 
-void	ft_sleep(long ms, t_config *conf)
+void	ft_usleep(long time_to_sleep, t_config *conf)
 {
 	long	start;
 
-	start = get_time_ms();
-	while (get_time_ms() - start < ms && is_running(conf))
+	start = current_time();
+	while (current_time() - start < time_to_sleep)
+	{
+		if (is_sim_end(conf))
+			break ;
 		usleep(500);
+	}
+}
+
+void	ft_broadcast(t_config *conf)
+{
+	int	i;
+
+	i = 0;
+	while (i < conf->initialized_dongles)
+	{
+		pthread_mutex_lock(&conf->dongles[i].available_mutex);
+		pthread_cond_broadcast(&conf->dongles[i].waiters);
+		pthread_mutex_unlock(&conf->dongles[i].available_mutex);
+		i++;
+	}
 }

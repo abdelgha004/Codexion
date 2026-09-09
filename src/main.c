@@ -1,29 +1,19 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../codexion.h"
+#include <pthread.h>
 
 int	main(int argc, char **argv)
 {
 	t_config	conf;
+	int			valid;
 
-	memset(&conf, 0, sizeof(conf));
-	if (parse_args(argc, argv, &conf))
-		return (1);
-	if (init_config(&conf))
-		return (cleanup(&conf), 1);
-	if (init_coders(&conf))
-		return (cleanup(&conf), 1);
-	if (init_dongles(&conf))
-		return (cleanup(&conf), 1);
-	run_simulation(&conf);
-	cleanup(&conf);
-	return (0);
+	valid = 0;
+	memset(&conf, 0, sizeof(t_config));
+	valid = full_checker(argc, argv, &conf);
+	if (valid)
+		return (ft_perror(valid), valid);
+	valid = initialize_data(&conf);
+	if (!valid)
+		valid = run_simulation(&conf);
+	return (ft_perror(valid), clean_data(&conf), valid);
 }

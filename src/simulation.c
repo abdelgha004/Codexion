@@ -1,53 +1,39 @@
+
 #include "../codexion.h"
 
-static int	create_coders(t_config *conf)
+void	*coder(void *args)
 {
-	int	i;
+	t_config	*conf;
+	t_coder		*coder;
 
-	i = 0;
-	while (i < conf->num_coders)
+	coder = (t_coder *)(args);
+	conf = coder->conf;
+	if (coder->id % 2)
+		usleep(500);
+	while (!is_sim_end(conf))
 	{
-		conf->coders[i].last_compile_start = conf->start_time;
-		if (pthread_create(&conf->coders[i].thread, NULL,
-				coder_routine, &conf->coders[i]))
-			return (1);
-		i++;
+		if (dongle_logic(coder))
+			return (NULL);
+		coder_compile(coder);
+		if (is_coder_finished(coder))
+			return (NULL);
+		coder_debug_refactor(coder);
 	}
-	return (0);
-}
-
-static void	join_coders(t_config *conf)
-{
-	int	i;
-
-	i = 0;
-	while (i < conf->num_coders)
-	{
-		pthread_join(conf->coders[i].thread, NULL);
-		i++;
-	}
+	return (NULL);
 }
 
 int	run_simulation(t_config *conf)
 {
-	pthread_t	monitor;
+	int	count;
+	int	valid;
 
-	conf->start_time = get_time_ms();
-	conf->running = true;
-	if (create_coders(conf))
-	{
-		stop_simulation(conf);
-		wake_all(conf);
-		return (1);
-	}
-	if (pthread_create(&monitor, NULL, monitor_routine, conf))
-	{
-		stop_simulation(conf);
-		wake_all(conf);
-		join_coders(conf);
-		return (1);
-	}
-	join_coders(conf);
-	pthread_join(monitor, NULL);
+	conf->start_time = current_time();
+	valid = pthread_create(&conf->monitor_thread, NULL, monitor_routine, conf);
+	if (valid)
+		return (14);
+	count = create_coder_threads(conf);
+	join_coder_threads(conf, count);
+	if (count < conf->number_of_coders)
+		return (14);
 	return (0);
 }

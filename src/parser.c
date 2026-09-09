@@ -1,96 +1,85 @@
 
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../codexion.h"
 
-static int	parse_number(char *str, long *value)
+static void	ft_perror_part2(int i)
 {
-	long	n;
-	int		i;
-
-	n = 0;
-	i = 0;
-	if (!str[0])
-		return (1);
-	while (str[i])
-	{
-		if (str[i] < '0' || str[i] > '9')
-			return (1);
-		if (n > (LONG_MAX - (str[i] - '0')) / 10)
-			return (1);
-		n = n * 10 + (str[i++] - '0');
-	}
-	*value = n;
-	return (0);
+	if (i == 9)
+		fprintf(stderr, "Error: time to debug should be greater than 0.\n");
+	else if (i == 10)
+		fprintf(stderr, "Error: time to refactor should be greater than 0.\n");
+	else if (i == 11)
+		fprintf(stderr,
+			"Error: number of compiles required should be greater than 0.\n");
+	else if (i == 12)
+		fprintf(stderr, "Error: dongle cooldown should not be negative.\n");
+	else if (i == 14)
+		fprintf(stderr, "Error: Couldnt create all threads.\n");
+	else if (i == 18)
+		fprintf(stderr, "Error: Max number of coders exceeded (3000).\n");
+	else if (i == 21)
+		fprintf(stderr, "Error: Initializing global mutexes failed.\n");
+	else if (i == 22)
+		fprintf(stderr, "Error: Initializing coders or dongles failed.\n");
+	else if (i == 16)
+		fprintf(stderr, "Allocation Error!\n");
 }
 
-static int	set_values(char **av, t_config *conf)
+void	ft_perror(int i)
 {
-	long	v[7];
-	int		i;
-
-	i = 0;
-	while (i < 7)
-	{
-		if (parse_number(av[i + 1], &v[i]))
-			return (1);
-		i++;
-	}
-	conf->num_coders = v[0];
-	conf->time_to_burnout = v[1];
-	conf->time_to_compile = v[2];
-	conf->time_to_debug = v[3];
-	conf->time_to_refactor = v[4];
-	conf->num_compiles = v[5];
-	conf->dongle_cooldown = v[6];
-	return (0);
-}
-
-static int	validate_values(t_config *conf)
-{
-	if (conf->num_coders < 1 || conf->num_coders > 3000)
-		return (1);
-	if (conf->time_to_burnout < 1)
-		return (1);
-	if (conf->time_to_compile < 1)
-		return (1);
-	if (conf->time_to_debug < 1 || conf->time_to_refactor < 1)
-		return (1);
-	if (conf->num_compiles < 1 || conf->dongle_cooldown < 0)
-		return (1);
-	return (0);
-}
-
-static int	set_scheduler(char *str, t_config *conf)
-{
-	if (!strcmp(str, "fifo") || !strcmp(str, "FIFO"))
-		conf->scheduler = FIFO;
-	else if (!strcmp(str, "edf") || !strcmp(str, "EDF"))
-		conf->scheduler = EDF;
+	if (i == 0)
+		return ;
+	if (i == 1)
+		fprintf(stderr, "Error: expected exactly 8 arguments.\n");
+	else if (i == 2)
+		fprintf(stderr, "Error: argument must not be empty.\n");
+	else if (i == 3)
+		fprintf(stderr, "Error: integer overflow.\n");
+	else if (i == 4)
+		fprintf(stderr, "Error: invalid argument.\n");
+	else if (i == 5)
+		fprintf(stderr, "Error: Scheduler must be 'edf' or 'fifo'.\n");
+	else if (i == 6)
+		fprintf(stderr, "Error: number of coders should be greater than 0.\n");
+	else if (i == 7)
+		fprintf(stderr, "Error: time to burnout should be greater than 0.\n");
+	else if (i == 8)
+		fprintf(stderr, "Error: time to compile should be greater than 0.\n");
 	else
-		return (1);
-	return (0);
+		ft_perror_part2(i);
 }
 
-int	parse_args(int argc, char **argv, t_config *conf)
+static void	fill_targets(int **targets, t_config *conf)
 {
+	targets[0] = &conf->number_of_coders;
+	targets[1] = &conf->time_to_burnout;
+	targets[2] = &conf->time_to_compile;
+	targets[3] = &conf->time_to_debug;
+	targets[4] = &conf->time_to_refactor;
+	targets[5] = &conf->number_of_compiles_required;
+	targets[6] = &conf->dongle_cooldown;
+}
+
+int	parser(int argc, char **argv, t_config *conf)
+{
+	int	i;
+	int	*targets[7];
+	int	v;
+
+	i = 0;
 	if (argc != 9)
-	{
-		fprintf(stderr, "Usage: ./codexion <7 args> <fifo|edf>\n");
 		return (1);
+	fill_targets(targets, conf);
+	while (++i < 8)
+	{
+		v = ft_atoi(argv[i], targets[i - 1]);
+		if (v)
+			return (v);
 	}
-	if (set_values(argv, conf))
-		return (fprintf(stderr, "Error: invalid argument\n"), 1);
-	if (validate_values(conf))
-		return (fprintf(stderr, "Error: invalid value\n"), 1);
-	if (set_scheduler(argv[8], conf))
-		return (fprintf(stderr, "Error: scheduler must be fifo or edf\n"), 1);
+	if (!strcmp(argv[i], "fifo"))
+		conf->scheduler = 0;
+	else if (!strcmp(argv[i], "edf"))
+		conf->scheduler = 1;
+	else
+		return (5);
 	return (0);
 }

@@ -1,71 +1,83 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   monitor.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../codexion.h"
 
-static int	check_finished(t_config *conf)
+int	is_sim_end(t_config *conf)
+{
+	int	verdict;
+
+	pthread_mutex_lock(&conf->end_mutex);
+	verdict = conf->simulation_ends;
+	pthread_mutex_unlock(&conf->end_mutex);
+	return (verdict);
+}
+
+void	check_ifended(t_config *conf)
 {
 	int	i;
-	int	count;
+	int	ended;
 
+	ended = 1;
 	i = 0;
-	while (i < conf->num_coders)
+	while (i < conf->number_of_coders)
 	{
-		pthread_mutex_lock(&conf->coders[i].mutex);
-		count = conf->coders[i].compile_count;
-		pthread_mutex_unlock(&conf->coders[i].mutex);
-		if (count < conf->num_compiles)
-			return (0);
+		pthread_mutex_lock(&conf->coders[i].count_mutex);
+		if (conf->coders[i].compile_count < conf->number_of_compiles_required)
+			ended = 0;
+		pthread_mutex_unlock(&conf->coders[i].count_mutex);
 		i++;
 	}
-	return (1);
+	if (ended)
+	{
+		pthread_mutex_lock(&conf->end_mutex);
+		conf->simulation_ends = 1;
+		pthread_mutex_unlock(&conf->end_mutex);
+	}
 }
 
-static int	check_burnout(t_config *conf)
+void	check_burnout(t_config *conf)
 {
 	int		i;
-	long	last;
+	long	last_time;
+	int		count;
 
 	i = 0;
-	while (i < conf->num_coders)
+	while (i < conf->number_of_coders)
 	{
-		pthread_mutex_lock(&conf->coders[i].mutex);
-		last = conf->coders[i].last_compile_start;
-		if (conf->coders[i].compile_count < conf->num_compiles
-			&& get_time_ms() - last >= conf->time_to_burnout)
+		pthread_mutex_lock(&conf->coders[i].count_mutex);
+		last_time = conf->coders[i].last_compile_time;
+		count = conf->coders[i].compile_count;
+		pthread_mutex_unlock(&conf->coders[i].count_mutex);
+		if (count < conf->number_of_compiles_required && last_time
+			+ conf->time_to_burnout <= current_time())
 		{
-			pthread_mutex_unlock(&conf->coders[i].mutex);
-			printf("%ld %d burned out\n", elapsed_time(conf),
+			pthread_mutex_lock(&conf->print_mutex);
+			pthread_mutex_lock(&conf->end_mutex);
+			conf->simulation_ends = 1;
+			pthread_mutex_unlock(&conf->end_mutex);
+			printf("%ld %d burned out\n", current_time() - conf->start_time,
 				conf->coders[i].id);
-			stop_simulation(conf);
-			return (1);
+			pthread_mutex_unlock(&conf->print_mutex);
+			break ;
 		}
-		pthread_mutex_unlock(&conf->coders[i].mutex);
 		i++;
 	}
-	return (0);
 }
 
-void	*monitor_routine(void *arg)
+void	*monitor_routine(void *args)
 {
 	t_config	*conf;
 
-	conf = arg;
-	while (is_running(conf))
+	conf = (t_config *)args;
+	while (1)
 	{
-		if (check_finished(conf) || check_burnout(conf))
+		usleep(500);
+		check_ifended(conf);
+		check_burnout(conf);
+		if (is_sim_end(conf))
 		{
-			stop_simulation(conf);
-			wake_all(conf);
+			ft_broadcast(conf);
 			break ;
 		}
-		usleep(500);
 	}
 	return (NULL);
 }
