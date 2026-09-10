@@ -6,7 +6,7 @@
 /*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/10 05:54:22 by aakourya          #+#    #+#             */
-/*   Updated: 2026/09/10 06:40:53 by aakourya         ###   ########.fr       */
+/*   Updated: 2026/09/10 11:07:39 by aakourya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	full_checker(int argc, char **argv, t_config *conf)
 	int	parser_valid;
 	int	config_valid;
 
-	parser_valid = parser(argc, argv, conf);
+	parser_valid = parse_arguments(argc, argv, conf);
 	if (parser_valid)
 		return (parser_valid);
 	config_valid = config_validator(conf);

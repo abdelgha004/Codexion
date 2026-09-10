@@ -1,0 +1,250 @@
+==2678838== Helgrind, a thread error detector
+==2678838== Copyright (C) 2007-2017, and GNU GPL'd, by OpenWorks LLP et al.
+==2678838== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==2678838== Command: ./codexion 5 2000 200 200 200 10 0 fifo
+==2678838== 
+9 1 has taken a dongle
+12 1 has taken a dongle
+12 1 is compiling
+213 1 is debugging
+214 2 has taken a dongle
+214 2 has taken a dongle
+214 2 is compiling
+413 1 is refactoring
+414 2 is debugging
+414 3 has taken a dongle
+414 3 has taken a dongle
+414 3 is compiling
+614 2 is refactoring
+614 3 is debugging
+614 4 has taken a dongle
+614 4 has taken a dongle
+614 4 is compiling
+814 3 is refactoring
+814 4 is debugging
+814 5 has taken a dongle
+814 5 has taken a dongle
+814 5 is compiling
+1014 5 is debugging
+1014 1 has taken a dongle
+1014 1 has taken a dongle
+1014 1 is compiling
+1014 4 is refactoring
+1214 5 is refactoring
+1214 1 is debugging
+1214 2 has taken a dongle
+1214 2 has taken a dongle
+1214 2 is compiling
+1414 1 is refactoring
+1414 2 is debugging
+1414 3 has taken a dongle
+1414 3 has taken a dongle
+1414 3 is compiling
+1614 2 is refactoring
+1614 3 is debugging
+1614 4 has taken a dongle
+1614 4 has taken a dongle
+1614 4 is compiling
+1814 3 is refactoring
+1814 4 is debugging
+1814 5 has taken a dongle
+1814 5 has taken a dongle
+1814 5 is compiling
+2014 4 is refactoring
+2014 5 is debugging
+2014 1 has taken a dongle
+2014 1 has taken a dongle
+2014 1 is compiling
+2214 5 is refactoring
+2214 1 is debugging
+2214 2 has taken a dongle
+2214 2 has taken a dongle
+2214 2 is compiling
+2414 1 is refactoring
+2414 2 is debugging
+2414 3 has taken a dongle
+2414 3 has taken a dongle
+2414 3 is compiling
+2614 2 is refactoring
+2614 3 is debugging
+2614 4 has taken a dongle
+2614 4 has taken a dongle
+2614 4 is compiling
+2814 4 is debugging
+2814 3 is refactoring
+2814 5 has taken a dongle
+2814 5 has taken a dongle
+2814 5 is compiling
+3014 4 is refactoring
+3014 5 is debugging
+3014 1 has taken a dongle
+3014 1 has taken a dongle
+3014 1 is compiling
+3214 5 is refactoring
+3214 1 is debugging
+3215 2 has taken a dongle
+3215 2 has taken a dongle
+3215 2 is compiling
+3414 1 is refactoring
+3415 2 is debugging
+3415 3 has taken a dongle
+3415 3 has taken a dongle
+3415 3 is compiling
+3615 2 is refactoring
+3615 3 is debugging
+3615 4 has taken a dongle
+3615 4 has taken a dongle
+3615 4 is compiling
+3815 3 is refactoring
+3815 4 is debugging
+3815 5 has taken a dongle
+3815 5 has taken a dongle
+3815 5 is compiling
+4015 4 is refactoring
+4015 5 is debugging
+4015 1 has taken a dongle
+4015 1 has taken a dongle
+4015 1 is compiling
+4215 5 is refactoring
+4216 1 is debugging
+4216 2 has taken a dongle
+4216 2 has taken a dongle
+4216 2 is compiling
+4416 1 is refactoring
+4416 2 is debugging
+4416 3 has taken a dongle
+4416 3 has taken a dongle
+4416 3 is compiling
+4616 3 is debugging
+4616 4 has taken a dongle
+4616 4 has taken a dongle
+4616 4 is compiling
+4616 2 is refactoring
+4816 3 is refactoring
+4816 4 is debugging
+4816 5 has taken a dongle
+4816 5 has taken a dongle
+4816 5 is compiling
+5016 4 is refactoring
+5017 5 is debugging
+5017 1 has taken a dongle
+5017 1 has taken a dongle
+5017 1 is compiling
+5217 5 is refactoring
+5217 1 is debugging
+5217 2 has taken a dongle
+5217 2 has taken a dongle
+5217 2 is compiling
+5417 1 is refactoring
+5417 2 is debugging
+5417 3 has taken a dongle
+5417 3 has taken a dongle
+5417 3 is compiling
+5617 2 is refactoring
+5617 3 is debugging
+5617 4 has taken a dongle
+5617 4 has taken a dongle
+5617 4 is compiling
+5817 3 is refactoring
+5817 4 is debugging
+5817 5 has taken a dongle
+5817 5 has taken a dongle
+5817 5 is compiling
+6017 4 is refactoring
+6017 5 is debugging
+6017 1 has taken a dongle
+6017 1 has taken a dongle
+6017 1 is compiling
+6217 5 is refactoring
+6217 1 is debugging
+6217 2 has taken a dongle
+6217 2 has taken a dongle
+6217 2 is compiling
+6417 1 is refactoring
+6417 2 is debugging
+6418 3 has taken a dongle
+6418 3 has taken a dongle
+6418 3 is compiling
+6617 2 is refactoring
+6618 3 is debugging
+6618 4 has taken a dongle
+6618 4 has taken a dongle
+6618 4 is compiling
+6818 3 is refactoring
+6818 4 is debugging
+6818 5 has taken a dongle
+6818 5 has taken a dongle
+6818 5 is compiling
+7018 4 is refactoring
+7018 5 is debugging
+7018 1 has taken a dongle
+7018 1 has taken a dongle
+7018 1 is compiling
+7218 1 is debugging
+7218 2 has taken a dongle
+7218 2 has taken a dongle
+7218 2 is compiling
+7219 5 is refactoring
+7418 1 is refactoring
+7419 2 is debugging
+7419 3 has taken a dongle
+7419 3 has taken a dongle
+7419 3 is compiling
+7619 2 is refactoring
+7620 3 is debugging
+7620 4 has taken a dongle
+7620 4 has taken a dongle
+7620 4 is compiling
+7820 4 is debugging
+7820 5 has taken a dongle
+7820 5 has taken a dongle
+7820 5 is compiling
+7820 3 is refactoring
+8020 4 is refactoring
+8020 5 is debugging
+8020 1 has taken a dongle
+8020 1 has taken a dongle
+8020 1 is compiling
+8220 5 is refactoring
+8220 1 is debugging
+8220 2 has taken a dongle
+8220 2 has taken a dongle
+8220 2 is compiling
+8420 1 is refactoring
+8420 2 is debugging
+8420 3 has taken a dongle
+8420 3 has taken a dongle
+8420 3 is compiling
+8620 2 is refactoring
+8620 3 is debugging
+8620 4 has taken a dongle
+8620 4 has taken a dongle
+8620 4 is compiling
+8820 3 is refactoring
+8821 4 is debugging
+8821 5 has taken a dongle
+8821 5 has taken a dongle
+8821 5 is compiling
+9021 4 is refactoring
+9021 5 is debugging
+9021 1 has taken a dongle
+9021 1 has taken a dongle
+9021 1 is compiling
+9221 5 is refactoring
+9222 2 has taken a dongle
+9222 2 has taken a dongle
+9222 2 is compiling
+9422 3 has taken a dongle
+9422 3 has taken a dongle
+9422 3 is compiling
+9622 4 has taken a dongle
+9622 4 has taken a dongle
+9622 4 is compiling
+9822 5 has taken a dongle
+9822 5 has taken a dongle
+9822 5 is compiling
+==2678838== 
+==2678838== Use --history-level=approx or =none to gain increased speed, at
+==2678838== the cost of reduced accuracy of conflicting-access information
+==2678838== For lists of detected and suppressed errors, rerun with: -s
+==2678838== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 432203 from 104)

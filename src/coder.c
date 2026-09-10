@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   simulation.c                                       :+:      :+:    :+:   */
+/*   coder.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/10 05:54:18 by aakourya          #+#    #+#             */
-/*   Updated: 2026/09/10 06:40:49 by aakourya         ###   ########.fr       */
+/*   Updated: 2026/09/10 13:24:18 by aakourya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,38 @@ void	*coder(void *args)
 	return (NULL);
 }
 
+// int	run_simulation(t_config *conf)
+// {
+// 	int	count;
+// 	int	valid;
+// 	int	i;
+
+// 	conf->start_time = current_time();
+// 	i = 0;
+// 	while (i < conf->number_of_coders)
+// 	{
+// 		pthread_mutex_lock(&conf->coders[i].count_mutex);
+// 		conf->coders[i].last_compile_time = conf->start_time;
+// 		pthread_mutex_unlock(&conf->coders[i].count_mutex);
+// 		i++;
+// 	}
+// 	valid = pthread_create(&conf->monitor_thread, NULL, monitor_routine, conf);
+// 	if (valid)
+// 		return (14);
+// 	count = create_coder_threads(conf);
+// 	join_coder_threads(conf, count);
+// 	if (count < conf->number_of_coders)
+// 		return (14);
+// 	return (0);
+// }
+
 int	run_simulation(t_config *conf)
 {
 	int	count;
 	int	valid;
 	int	i;
 
-	conf->start_time = current_time();
+	conf->start_time = get_time_ms();
 	i = 0;
 	while (i < conf->number_of_coders)
 	{

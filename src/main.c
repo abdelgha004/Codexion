@@ -6,7 +6,7 @@
 /*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/10 05:53:54 by aakourya          #+#    #+#             */
-/*   Updated: 2026/09/10 06:40:30 by aakourya         ###   ########.fr       */
+/*   Updated: 2026/09/10 10:22:55 by aakourya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ int	main(int argc, char **argv)
 	memset(&conf, 0, sizeof(t_config));
 	valid = full_checker(argc, argv, &conf);
 	if (valid)
-		return (ft_perror(valid), valid);
+		return (print_error(valid), valid);
 	valid = initialize_data(&conf);
 	if (!valid)
 		valid = run_simulation(&conf);
-	return (ft_perror(valid), clean_data(&conf), valid);
+	return (print_error(valid), clean_data(&conf), valid);
 }

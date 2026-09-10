@@ -6,7 +6,7 @@
 /*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/10 05:53:51 by aakourya          #+#    #+#             */
-/*   Updated: 2026/09/10 06:40:40 by aakourya         ###   ########.fr       */
+/*   Updated: 2026/09/10 14:31:33 by aakourya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,13 @@ void	check_burnout(t_config *conf)
 		count = conf->coders[i].compile_count;
 		pthread_mutex_unlock(&conf->coders[i].count_mutex);
 		if (count < conf->number_of_compiles_required && last_time
-			+ conf->time_to_burnout <= current_time())
+			+ conf->time_to_burnout < get_time_ms())
 		{
 			pthread_mutex_lock(&conf->print_mutex);
 			pthread_mutex_lock(&conf->end_mutex);
 			conf->simulation_ends = 1;
 			pthread_mutex_unlock(&conf->end_mutex);
-			printf("%ld %d burned out\n", current_time() - conf->start_time,
+			printf("%ld %d burned out\n", get_time_ms() - conf->start_time,
 				conf->coders[i].id);
 			pthread_mutex_unlock(&conf->print_mutex);
 			break ;
@@ -86,7 +86,7 @@ void	*monitor_routine(void *args)
 		check_burnout(conf);
 		if (is_sim_end(conf))
 		{
-			ft_broadcast(conf);
+			broadcast_waiters(conf);
 			break ;
 		}
 	}
