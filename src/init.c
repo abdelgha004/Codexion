@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   initialize_data.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/10 05:53:56 by aakourya          #+#    #+#             */
+/*   Updated: 2026/09/10 06:39:46 by aakourya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../codexion.h"
 
@@ -57,23 +68,15 @@ static int	init_dongles(t_config *conf)
 		conf->dongles[i] = tmp;
 		mtx = pthread_mutex_init(&conf->dongles[i].available_mutex, NULL);
 		if (mtx)
-		{
-			heap_free(&conf->dongles[i].heap);
 			return (i);
-		}
 		mtx = pthread_cond_init(&conf->dongles[i].waiters, NULL);
 		if (mtx)
-		{
-			pthread_mutex_destroy(&conf->dongles[i].available_mutex);
-			heap_free(&conf->dongles[i].heap);
-			return (i);
-		}
+			return (pthread_mutex_destroy(
+					&conf->dongles[i].available_mutex), i);
 		i++;
 	}
 	return (conf->number_of_coders);
 }
-
-
 
 int	initialize_data(t_config *conf)
 {

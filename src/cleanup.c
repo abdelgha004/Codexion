@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cleanup.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/10 05:54:05 by aakourya          #+#    #+#             */
+/*   Updated: 2026/09/10 06:35:33 by aakourya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../codexion.h"
 
@@ -19,7 +30,7 @@ void	clean_data(t_config *conf)
 		{
 			pthread_mutex_destroy(&conf->dongles[i].available_mutex);
 			pthread_cond_destroy(&conf->dongles[i].waiters);
-			heap_free(&conf->dongles[i].heap);
+			free(conf->dongles[i].heap.nodes);
 			i++;
 		}
 		free(conf->dongles);

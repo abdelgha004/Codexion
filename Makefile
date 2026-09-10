@@ -1,13 +1,12 @@
 CC = cc
-# CFLAGS = -Wall -Wextra -Werror -pthread
-
-CFLAGS = -Wall -Wextra -Werror -Wno-error=type-limits -pthread
+CFLAGS = -Wall -Wextra -Werror -pthread
 NAME = codexion
 
-SRC = SRC/utils.c SRC/parser.c SRC/validator.c SRC/initialize_data.c \
-    SRC/main.c SRC/cleanup.c SRC/simulation.c SRC/simulation_utils.c \
-    SRC/dongles.c SRC/dongle_utils.c SRC/monitor.c SRC/heap_queue.c \
-    SRC/heap_utils.c
+SRC = src/main.c src/parser.c src/utils.c \
+      src/init.c src/validator.c src/simulation.c \
+      src/simulation_utils.c src/dongles.c src/dongle_utils.c\
+      src/monitor.c src/heap_queue.c src/heap_utils.c\
+      src/cleanup.c 
 
 OBJS = $(SRC:.c=.o)
 
@@ -17,10 +16,10 @@ $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
 clean:
-	@rm -f $(OBJS)
+	rm -f $(OBJS)
 
 fclean: clean
-	@rm -f $(NAME)
+	rm -f $(NAME)
 
 re: fclean all
 

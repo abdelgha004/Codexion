@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   simulation_utils.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/10 05:53:45 by aakourya          #+#    #+#             */
+/*   Updated: 2026/09/10 06:41:12 by aakourya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../codexion.h"
 
@@ -9,7 +20,6 @@ void	coder_compile(t_coder *coder)
 	pthread_mutex_lock(&coder->count_mutex);
 	coder->last_compile_time = current_time();
 	pthread_mutex_unlock(&coder->count_mutex);
-	print_state(coder, "is compiling");
 	ft_usleep(conf->time_to_compile, conf);
 	release_dongle(&conf->dongles[coder->right_dongle]);
 	release_dongle(&conf->dongles[coder->left_dongle]);
