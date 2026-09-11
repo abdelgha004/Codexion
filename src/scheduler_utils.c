@@ -6,7 +6,7 @@
 /*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/10 05:53:58 by aakourya          #+#    #+#             */
-/*   Updated: 2026/09/10 07:25:52 by aakourya         ###   ########.fr       */
+/*   Updated: 2026/09/11 20:05:28 by aakourya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	swap_nodes(t_request *a, t_request *b)
 	*b = tmp;
 }
 
-void	heapify_up(t_heap *heap, int index, int scheduler)
+void	move_node_up(t_heap *heap, int index, int scheduler)
 {
 	int	parent;
 
@@ -39,7 +39,7 @@ void	heapify_up(t_heap *heap, int index, int scheduler)
 	}
 }
 
-void	heapify_down(t_heap *heap, int index, int scheduler)
+void	move_node_down(t_heap *heap, int index, int scheduler)
 {
 	int	left;
 	int	right;
@@ -64,4 +64,25 @@ void	heapify_down(t_heap *heap, int index, int scheduler)
 		else
 			break ;
 	}
+}
+
+void	remove_heap_node(t_heap *heap, int i, int scheduler)
+{
+	int	parent;
+
+	heap->size--;
+	if (i == heap->size)
+		return ;
+	heap->nodes[i] = heap->nodes[heap->size];
+	if (i > 0)
+	{
+		parent = (i - 1) / 2;
+		if (is_higher_priority(heap->nodes[i],
+				heap->nodes[parent], scheduler))
+		{
+			move_node_up(heap, i, scheduler);
+			return ;
+		}
+	}
+	move_node_down(heap, i, scheduler);
 }

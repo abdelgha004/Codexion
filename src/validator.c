@@ -6,7 +6,7 @@
 /*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/10 05:54:22 by aakourya          #+#    #+#             */
-/*   Updated: 2026/09/10 11:07:39 by aakourya         ###   ########.fr       */
+/*   Updated: 2026/09/11 19:44:16 by aakourya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,21 @@ int	config_validator(t_config *conf)
 	if (conf->number_of_coders < 1)
 		return (6);
 	if (conf->time_to_burnout < 1)
-		return (7);
+		return (6);
 	if (conf->time_to_compile < 1)
-		return (8);
+		return (6);
 	if (conf->time_to_debug < 1)
-		return (9);
+		return (6);
 	if (conf->time_to_refactor < 1)
-		return (10);
+		return (6);
 	if (conf->number_of_compiles_required < 1)
-		return (11);
+		return (6);
 	if (conf->dongle_cooldown < 0)
-		return (12);
+		return (6);
 	return (0);
 }
 
-int	full_checker(int argc, char **argv, t_config *conf)
+int	validate_arguments(int argc, char **argv, t_config *conf)
 {
 	int	parser_valid;
 	int	config_valid;

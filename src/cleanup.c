@@ -6,13 +6,13 @@
 /*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/10 05:54:05 by aakourya          #+#    #+#             */
-/*   Updated: 2026/09/10 06:35:33 by aakourya         ###   ########.fr       */
+/*   Updated: 2026/09/11 19:22:46 by aakourya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../codexion.h"
 
-void	clean_data(t_config *conf)
+void	cleanup_simulation(t_config *conf)
 {
 	int	i;
 

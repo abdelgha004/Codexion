@@ -6,7 +6,7 @@
 /*   By: aakourya <aakourya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/10 05:53:49 by aakourya          #+#    #+#             */
-/*   Updated: 2026/09/10 10:41:43 by aakourya         ###   ########.fr       */
+/*   Updated: 2026/09/11 19:59:00 by aakourya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,13 @@ void	print_error(int error)
 		fprintf(stderr, "Error: invalid argument.\n");
 	else if (error == 5)
 		fprintf(stderr, "Error: invalid scheduler.\n");
-	else if (error >= 6 && error <= 12)
+	else if (error == 6)
 		fprintf(stderr, "Error: invalid configuration.\n");
-	else if (error == 14)
+	else if (error == 7)
 		fprintf(stderr, "Error: thread creation failed.\n");
-	else if (error == 16)
+	else if (error == 8)
 		fprintf(stderr, "Error: memory allocation failed.\n");
-	else if (error == 18)
-		fprintf(stderr, "Error: too many coders.\n");
-	else if (error == 21 || error == 22)
+	else if (error == 10)
 		fprintf(stderr, "Error: initialization failed.\n");
 }
 
